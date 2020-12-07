@@ -2,9 +2,9 @@ import React from 'react'
 
 const Header = () => {
   return (
-    <header>
+    <header className="header">
        <h1>COVID-19</h1>
-       <select className="header">
+       <select >
           <option>United States</option>
           <option>World</option>
        </select>
