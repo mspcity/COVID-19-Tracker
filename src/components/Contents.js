@@ -6,6 +6,7 @@ const Contents = () => {
 
   const [confirmedData, setConfirmedData] = useState({})
   const [quarantinedData, setQuarantinedData] = useState({})
+  const [comparedData, setComparedData] = useState({})
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -39,7 +40,7 @@ const Contents = () => {
         }
         return acc;
       }, [])
-      
+      console.log(arr)
 
       const labels = arr.map(a => `${a.month+1}`)
       setConfirmedData({
@@ -53,9 +54,34 @@ const Contents = () => {
           }
         ]
       })
+      setQuarantinedData({
+        labels,
+        datasets: [
+          { 
+            label: "Quarantined",
+            borderColor: "salmon",
+            fill: false,
+            data: arr.map(a => a.active)
+          }
+        ]
+      })
+
+      const last = arr[arr.length-1]
+      setComparedData({
+        labels: ["Confimed", "Recovered", "Deaths"],
+        datasets: [
+          { 
+            label: "Cases, Recovered, Deaths",
+            backgroundColor: ["#ff3d67", "#059bff", "#ffc233"],
+            borderColor: ["#ff3d67", "#059bff", "#ffc233"],
+            fill: false,
+            data: [last.confirmed, last.recovered, last.death]
+          }
+        ]
+      })
     }
     fetchEvents()
-  })
+  }, [])
   return (
     <section>
        <h2>COVID-19 Cases</h2>
@@ -68,7 +94,13 @@ const Contents = () => {
           </div>
           <div>
             <Line data={quarantinedData} options={
-              { title: { display: true, text: "", fontSize: 16}},
+              { title: { display: true, text: "월별 격리자 현황", fontSize: 16}},
+              { legend: { display: true, position: "bottom"}}
+            } />
+          </div>
+          <div>
+            <Doughnut data={comparedData} options={
+              { title: { display: true, text: `누적 확진, 해제, 사망 (${new Date().getMonth()+1})`, fontSize: 16}},
               { legend: { display: true, position: "bottom"}}
             } />
           </div>
