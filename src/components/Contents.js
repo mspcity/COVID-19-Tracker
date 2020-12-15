@@ -58,7 +58,7 @@ const Contents = () => {
         labels,
         datasets: [
           { 
-            label: "Active",
+            label: "Quarantine",
             borderColor: "salmon",
             fill: false,
             data: arr.map(a => a.active)
